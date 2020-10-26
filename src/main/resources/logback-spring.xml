@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="false">
+    <property name="FILE_PATTERN"   value="%d{yyyy-MM-dd HH:mm:ss}"/>
+    <property name="LOG_HOME" value="E:/Idea_Project/sys/log/artPark"/>
+    <!--控制台输出-->
+    <appender name="logInConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <!--        <Encoding>UTF-8</Encoding>-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>console - %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </layout>
+    </appender>
+    <!--文件输出-->
+<!--    <appender name="logInFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        &lt;!&ndash;        <Encoding>UTF-8</Encoding>&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            <maxHistory>2</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            <pattern>file - %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
+<!--        </layout>-->
+<!--    </appender>-->
+    <!--根据每次请求以文件输出-->
+    <appender name="logByPerReq" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <key>LOG_REQ_ID</key>
+            <defaultValue>undefined</defaultValue>
+        </discriminator>
+        <sift>
+            <appender name="file-${LOG_REQ_ID}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <encoder>
+                    <pattern>req - %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+                </encoder>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/${LOG_REQ_ID}.log</fileNamePattern>
+                </rollingPolicy>
+                <append>true</append>
+            </appender>
+        </sift>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <!--请求号不为空且类型为api，返回false,否则true-->
+                <expression>
+                    return "API".equals(((String) mdc.get("MDC_TYPE"))) ;
+                </expression>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>ACCEPT</OnMatch>
+        </filter>
+    </appender>
+    <!--请求汇总日志-->
+    <appender name="summaryLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/summary - %d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>summary - %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="undefineLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/%d{yyyyMMdd}/undefine - %d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>undefine - %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </layout>
+    </appender>
+    <logger name="log.req.summary" level="info" additivity="false">
+        <appender-ref ref="summaryLog"/>
+    </logger>
+
+    <!--TRACE、DEBUG、INFO、WARN、ERROR-->
+    <root level="info">
+        <appender-ref ref="logInConsole"/>
+<!--        <appender-ref ref="logInFile"/>-->
+        <appender-ref ref="logByPerReq"/>
+        <appender-ref ref="undefineLog"/>
+    </root>
+</configuration>

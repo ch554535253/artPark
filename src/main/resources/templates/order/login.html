@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户登录</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<!--<link rel="import" type="text/css" href="main.html">-->
+<script type="text/javascript" src="/artPark/webjars/jquery/3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" th:href="'/artPark'+${urls.getForLookupPath('/css/reset.css')}">
+<link rel="stylesheet" type="text/css" th:href="'/artPark'+${urls.getForLookupPath('/css/style.css')}" media="screen">
+<script type="text/javascript" th:src="'/artPark'+${urls.getForLookupPath('/js/fyll.js')}"></script>
+<script type="text/javascript" th:src="'/artPark'+${urls.getForLookupPath('/js/index.js')}"></script>
+</head>
+
+<body>
+<div id="window" style="display:none;">
+
+	<div class="page page-front">
+		<div class="page-content">
+			<div class="input-row">
+				<label class="label fadeIn">用户名</label>
+				<input id="username" type="text" th:value="${username}" data-fyll="" class="input fadeIn delay1"/>
+			</div>
+			<div class="input-row">
+				<label class="label fadeIn delay2">密码</label>
+				<input id="password" type="password" data-fyll="" class="input fadeIn delay3"/>
+			</div>
+			<div class="input-row perspective row-fl">
+				<button id="submit" class="button load-btn fadeIn delay4">
+					<span class="default"><i class="ion-arrow-right-b"></i>登录</span>
+					<div class="load-state">
+						<div class="ball"></div>
+						<div class="ball"></div>
+						<div class="ball"></div>
+					</div>
+				</button>
+				<button id="registics" class="button load-btn fadeIn delay4">
+					<span class="default">注册</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="page page-back">
+		<div class="page-content">
+			<img src="https://www.17sucai.com/preview/1/2015-10-03/css3-auto-login-form-animation/avatar.jpg" class="avatar"/>
+			<p class="welcome">欢迎回来，狗！</p>
+			<div class="perspective">
+<!-- 				<button class="button inline trigger-anim-replay"><i class="ion-refresh"></i>重播</button> -->
+				<button class="button inline trigger-anim-replay"><i class="ion-refresh"></i>逛逛</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
