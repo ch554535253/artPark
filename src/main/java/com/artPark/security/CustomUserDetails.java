@@ -2,28 +2,38 @@ package com.artPark.security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author lbc on 2020/10/22  17:26.
  */
 @Data
 public class CustomUserDetails implements UserDetails {
-    private String userName;
+    private String userId;
     private String password;
+    private String roleId;
+
+    public CustomUserDetails(String userId){
+        this.userId = userId;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(roleId));
+        return authorities;
     }
 
     @Override
     public String getUsername() {
-        return this.userName;
+        return this.userId;
     }
 
     /**

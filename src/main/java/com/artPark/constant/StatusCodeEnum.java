@@ -10,6 +10,7 @@ public enum StatusCodeEnum {
     success("0000"),
     auth_failed("0100"),
     permission_denied("0101"),
+    token_expired("0102"),
     failed("9999"),
     ;
 

@@ -4,6 +4,7 @@ import com.artPark.common.mapper.SysUserModelMapper;
 import com.artPark.common.model.SysUserModel;
 import com.artPark.common.model.SysUserModelExample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,10 @@ public class OrderController {
     private SysUserModelMapper sysUserModelMapper;
 
     @RequestMapping(value = "/api/userInfo")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public List getUserInfo(){
         List<SysUserModel> suList = sysUserModelMapper.selectByExample(new SysUserModelExample());
         return suList;
     }
+
 }

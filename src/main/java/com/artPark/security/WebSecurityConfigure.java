@@ -3,7 +3,9 @@ package com.artPark.security;
 import com.artPark.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @Author lbc on 2020/10/21  17:55.
@@ -26,14 +29,16 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
     private final UserService userService;
+    private final JwtTokenAuthFilter jwtTokenAuthFilter;
 
     @Autowired
     WebSecurityConfigure(@Qualifier("JwtAuthenticationEntryPoint") AuthenticationEntryPoint jwtAuthenticationEntryPoint,
                          @Qualifier("RestAuthenticationAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler,
-                         UserService userService){
+                         UserService userService,JwtTokenAuthFilter jwtTokenAuthFilter){
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.userService = userService;
+        this.jwtTokenAuthFilter = jwtTokenAuthFilter;
     }
 
 
@@ -43,23 +48,33 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)         //权限不足处理器
                 .and().csrf().disable()                                                     //因使用JWT作为认证标识，允许跨域请求
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //基于token,不需要session
-                .and().authorizeRequests().antMatchers("/","/login","/api/*").permitAll()  //放开无需授权访问的资源
+                .and().authorizeRequests().antMatchers("/","/login*").permitAll()  //放开无需授权访问的资源
                 .anyRequest().authenticated();
-//        http.addFilterBefore();
+        http.addFilterBefore(jwtTokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    protected  void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-                return userService.getUserDetails();
-            }
-        });
-    }
+//    @Override
+//    protected  void configure(AuthenticationManagerBuilder builder) throws Exception {
+//        builder.userDetailsService(new UserDetailsService() {
+//            @Override
+//            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//                return userService.getUserDetails();
+//            }
+//        });
+//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception{
         web.ignoring().antMatchers("/**/*.js","/**/*.css","/**/*.png","/**/*.gif");
     }
+
+    @Bean
+    public AuthenticationManager getAuthenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+//    @Bean
+//    public JwtTokenAuthFilter getJwtTokenAuthFilter(){
+//        return new JwtTokenAuthFilter();
+//    }
 }

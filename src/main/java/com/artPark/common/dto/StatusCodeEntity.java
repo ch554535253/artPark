@@ -1,5 +1,7 @@
 package com.artPark.common.dto;
 
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.stereotype.Component;
@@ -13,8 +15,10 @@ import java.util.Map;
  */
 @Component
 @PropertySource(value={"classpath:config/statusCode.properties"},encoding = "utf-8")
+@ConfigurationProperties(prefix = "sc")
+@Data
 public class StatusCodeEntity {
-    private Map<String,String> sc = new HashMap<String,String>();
+    private Map<String,String> data = new HashMap<String,String>();
     private static StatusCodeEntity instance;
 
     @PostConstruct
@@ -22,6 +26,6 @@ public class StatusCodeEntity {
         instance = this;
     }
     public static String get(String key){
-        return instance.sc.get(key);
+        return instance.data.get(key);
     }
 }
