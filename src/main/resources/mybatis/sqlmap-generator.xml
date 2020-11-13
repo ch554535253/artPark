@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <properties resource="application.properties"/>
+    <context id="context" targetRuntime="com.artPark.common.plugin.CustomIntrospectedTablesImpl">
+     <property name="basicMapperTargetPackage" value="com.artPark.common.mapper"/>
+	 <plugin type="com.artPark.common.plugin.CustomMapperPlugin"/>
+	 <plugin type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin"/>
+	 <commentGenerator>
+		<property name="suppressAllComments" value="true"/>
+	 </commentGenerator>
+	 <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+			connectionURL="${spring.datasource.url}"
+			userId="${spring.datasource.username}"
+			password="${spring.datasource.password}"/>
+
+	 <javaModelGenerator targetPackage="com.artPark.common.model" targetProject="E:/Idea_Project/artPark/src/main/java"/>
+	 <sqlMapGenerator targetPackage="sqlMap" targetProject="E:/Idea_Project/artPark/src/main/resources"/>
+	 <javaClientGenerator targetPackage="com.artPark.common.mapper" type="XMLMAPPER" targetProject="E:/Idea_Project/artPark/src/main/java"/>
+
+<!--		<table schema="ROOT" tableName="SYS_USER" domainObjectName="SysUserModel"/>-->
+		<table schema="ROOT" tableName="SYS_MENU" domainObjectName="SysMenuModel"/>
+<!--		<table schema="ROOT" tableName="SYS_USER" domainObjectName="SysUserModel">-->
+<!--			<property name="virtualKeyColumns" value="ID1, ID2" />-->
+<!--		</table>-->
+
+
+    </context>
+</generatorConfiguration>
