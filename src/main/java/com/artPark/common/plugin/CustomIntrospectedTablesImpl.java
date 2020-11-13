@@ -6,7 +6,7 @@ import org.mybatis.generator.codegen.mybatis3.IntrospectedTableMyBatis3Impl;
  * @author  lbc
  *
  */
-public class CustomIntrospectedTableImpl extends IntrospectedTableMyBatis3Impl{
+public class CustomIntrospectedTablesImpl extends IntrospectedTableMyBatis3Impl{
 	protected void calculateXmlAttributes(){
 		setIbatis2SqlMapPackage(calculateSqlMapPackage());
 	    setIbatis2SqlMapFileName(calculateIbatis2SqlMapFileName());
@@ -42,28 +42,28 @@ public class CustomIntrospectedTableImpl extends IntrospectedTableMyBatis3Impl{
 	    setMyBatis3UpdateByExampleWhereClauseId("Update_By_Example_Where_Clause");
 	}
 	
-	public String getAliasedFullyQualifiedTableNameAtRuntime() {
-		String schemaTable = super.getAliasedFullyQualifiedTableNameAtRuntime();
-		String[] tableNames = schemaTable.split("\\.");
-		if (tableNames.length == 1) {
-			return tableNames[0];
-		} else if (tableNames.length == 2) {
-		return "${LINANPAY_SCHEMA}." + tableNames[1];//对应mybatis-config.xml中所设置的别名
-		} else {
-			throw new RuntimeException("schemaTable Name invalid [" + schemaTable + "]");
-		}
-	}
+//	public String getAliasedFullyQualifiedTableNameAtRuntime() {
+//		String schemaTable = super.getAliasedFullyQualifiedTableNameAtRuntime();
+//		String[] tableNames = schemaTable.split("\\.");
+//		if (tableNames.length == 1) {
+//			return tableNames[0];
+//		} else if (tableNames.length == 2) {
+//		return "${LINANPAY_SCHEMA}." + tableNames[1];//对应mybatis-config.xml中所设置的别名
+//		} else {
+//			throw new RuntimeException("schemaTable Name invalid [" + schemaTable + "]");
+//		}
+//	}
 	
-	public String getFullyQualifiedTableNameAtRuntime() {
-		String schemaTable = super.getFullyQualifiedTableNameAtRuntime();
-		String[] tableNames = schemaTable.split("\\.");
-		if (tableNames.length == 1) {
-			return tableNames[0];
-		} else if (tableNames.length == 2) {
-			return "${LINANPAY_SCHEMA}." + tableNames[1];//对应mybatis-config.xml中所设置的别名
-		} else {
-			throw new RuntimeException("schemaTable Name invalid [" + schemaTable + "]");
-		}
-	}
+//	public String getFullyQualifiedTableNameAtRuntime() {
+//		String schemaTable = super.getFullyQualifiedTableNameAtRuntime();
+//		String[] tableNames = schemaTable.split("\\.");
+//		if (tableNames.length == 1) {
+//			return tableNames[0];
+//		} else if (tableNames.length == 2) {
+//			return "${LINANPAY_SCHEMA}." + tableNames[1];//对应mybatis-config.xml中所设置的别名
+//		} else {
+//			throw new RuntimeException("schemaTable Name invalid [" + schemaTable + "]");
+//		}
+//	}
 	
 }

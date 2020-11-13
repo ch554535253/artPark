@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artPark.common.mapper.SysMenuModelMapper" >
+  <resultMap id="basicResultMap" type="com.artPark.common.model.SysMenuModel" >
+    <id column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="baseColumnList" >
+    menu_id, menu_name, menu_url, priority, status
+  </sql>
+  <select id="find" resultMap="basicResultMap" >
+    select
+    <include refid="baseColumnList" />
+    from sys_menu
+    <trim prefix="WHERE" prefixOverrides="AND" >
+      <if test="menuId !=null and menuId !=''" >
+        AND  menu_id=#{menuId,jdbcType=INTEGER}
+      </if>
+      <if test="menuName !=null and menuName !=''" >
+        AND  menu_name=#{menuName,jdbcType=VARCHAR}
+      </if>
+      <if test="menuUrl !=null and menuUrl !=''" >
+        AND  menu_url=#{menuUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="priority !=null and priority !=''" >
+        AND  priority=#{priority,jdbcType=INTEGER}
+      </if>
+      <if test="status !=null and status !=''" >
+        AND  status=#{status,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </select>
+  <select id="findOne" resultMap="basicResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="baseColumnList" />
+    from sys_menu
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from sys_menu
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.artPark.common.model.SysMenuModel" >
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="findCount" resultType="java.lang.Integer" >
+    select count(*) from sys_menu
+    <trim prefix="WHERE" prefixOverrides="AND" >
+      <if test="menuId !=null and menuId !=''" >
+        AND  menu_id=#{menuId,jdbcType=INTEGER}
+      </if>
+      <if test="menuName !=null and menuName !=''" >
+        AND  menu_name=#{menuName,jdbcType=VARCHAR}
+      </if>
+      <if test="menuUrl !=null and menuUrl !=''" >
+        AND  menu_url=#{menuUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="priority !=null and priority !=''" >
+        AND  priority=#{priority,jdbcType=INTEGER}
+      </if>
+      <if test="status !=null and status !=''" >
+        AND  status=#{status,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </select>
+  <update id="update" parameterType="com.artPark.common.model.SysMenuModel" >
+    update sys_menu
+    <set >
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </update>
+</mapper>

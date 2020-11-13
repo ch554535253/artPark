@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.artPark.common.mapper.SysUserModelMapper" >
-  <resultMap id="BaseResultMap" type="com.artPark.common.model.SysUserModel" >
+  <resultMap id="basicResultMap" type="com.artPark.common.model.SysUserModel" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="VARCHAR" />
@@ -11,106 +11,51 @@
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="passwd" property="passwd" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
+  <sql id="baseColumnList" >
     user_id, name, sex, birthday, mobile, email, address, passwd
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.artPark.common.model.SysUserModelExample" >
+  <select id="find" resultMap="basicResultMap" >
     select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
+    <include refid="baseColumnList" />
     from sys_user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
+    <trim prefix="WHERE" prefixOverrides="AND" >
+      <if test="userId !=null and userId !=''" >
+        AND  user_id=#{userId,jdbcType=INTEGER}
+      </if>
+      <if test="name !=null and name !=''" >
+        AND  name=#{name,jdbcType=VARCHAR}
+      </if>
+      <if test="sex !=null and sex !=''" >
+        AND  sex=#{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="birthday !=null and birthday !=''" >
+        AND  birthday=#{birthday,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile !=null and mobile !=''" >
+        AND  mobile=#{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="email !=null and email !=''" >
+        AND  email=#{email,jdbcType=VARCHAR}
+      </if>
+      <if test="address !=null and address !=''" >
+        AND  address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="passwd !=null and passwd !=''" >
+        AND  passwd=#{passwd,jdbcType=VARCHAR}
+      </if>
+    </trim>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="findOne" resultMap="basicResultMap" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
+    <include refid="baseColumnList" />
     from sys_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="delete" parameterType="java.lang.Integer" >
     delete from sys_user
     where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.artPark.common.model.SysUserModelExample" >
-    delete from sys_user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
   </delete>
   <insert id="insert" parameterType="com.artPark.common.model.SysUserModel" >
-    insert into sys_user (user_id, name, sex, 
-      birthday, mobile, email, 
-      address, passwd)
-    values (#{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
-      #{birthday,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.artPark.common.model.SysUserModel" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -165,59 +110,36 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.artPark.common.model.SysUserModelExample" resultType="java.lang.Integer" >
+  <select id="findCount" resultType="java.lang.Integer" >
     select count(*) from sys_user
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
+    <trim prefix="WHERE" prefixOverrides="AND" >
+      <if test="userId !=null and userId !=''" >
+        AND  user_id=#{userId,jdbcType=INTEGER}
+      </if>
+      <if test="name !=null and name !=''" >
+        AND  name=#{name,jdbcType=VARCHAR}
+      </if>
+      <if test="sex !=null and sex !=''" >
+        AND  sex=#{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="birthday !=null and birthday !=''" >
+        AND  birthday=#{birthday,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile !=null and mobile !=''" >
+        AND  mobile=#{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="email !=null and email !=''" >
+        AND  email=#{email,jdbcType=VARCHAR}
+      </if>
+      <if test="address !=null and address !=''" >
+        AND  address=#{address,jdbcType=VARCHAR}
+      </if>
+      <if test="passwd !=null and passwd !=''" >
+        AND  passwd=#{passwd,jdbcType=VARCHAR}
+      </if>
+    </trim>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update sys_user
-    <set >
-      <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sex != null" >
-        sex = #{record.sex,jdbcType=VARCHAR},
-      </if>
-      <if test="record.birthday != null" >
-        birthday = #{record.birthday,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mobile != null" >
-        mobile = #{record.mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="record.email != null" >
-        email = #{record.email,jdbcType=VARCHAR},
-      </if>
-      <if test="record.address != null" >
-        address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.passwd != null" >
-        passwd = #{record.passwd,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update sys_user
-    set user_id = #{record.userId,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      sex = #{record.sex,jdbcType=VARCHAR},
-      birthday = #{record.birthday,jdbcType=VARCHAR},
-      mobile = #{record.mobile,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR},
-      passwd = #{record.passwd,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.artPark.common.model.SysUserModel" >
+  <update id="update" parameterType="com.artPark.common.model.SysUserModel" >
     update sys_user
     <set >
       <if test="name != null" >
@@ -242,17 +164,6 @@
         passwd = #{passwd,jdbcType=VARCHAR},
       </if>
     </set>
-    where user_id = #{userId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.artPark.common.model.SysUserModel" >
-    update sys_user
-    set name = #{name,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=VARCHAR},
-      birthday = #{birthday,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      passwd = #{passwd,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

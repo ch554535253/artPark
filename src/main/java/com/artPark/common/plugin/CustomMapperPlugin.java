@@ -8,10 +8,7 @@ import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
-import org.mybatis.generator.api.dom.java.CompilationUnit;
-import org.mybatis.generator.api.dom.java.Interface;
-import org.mybatis.generator.api.dom.java.Method;
-import org.mybatis.generator.api.dom.java.TopLevelClass;
+import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Element;
 import org.mybatis.generator.api.dom.xml.TextElement;
@@ -53,6 +50,13 @@ public class CustomMapperPlugin extends PluginAdapter {
 	public boolean sqlMapCountByExampleElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
 		this.preProcessFindClause(element);
 		element.addElement(this.buildFindWhereClause(introspectedTable));
+		return true;
+	}
+
+	public boolean  modelBaseRecordClassGenerated(TopLevelClass topLevelClass,IntrospectedTable introspectedTable) {
+		FullyQualifiedJavaType a = new FullyQualifiedJavaType("com.artPark.common.plugin.BasicModel");
+		topLevelClass.addImportedType(a);
+		topLevelClass.setSuperClass(a);
 		return true;
 	}
 

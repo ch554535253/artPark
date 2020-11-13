@@ -1,6 +1,8 @@
 package com.artPark.common.model;
 
-public class SysUserModel {
+import com.artPark.common.plugin.BasicModel;
+
+public class SysUserModel extends BasicModel {
     private Integer userId;
 
     private String name;

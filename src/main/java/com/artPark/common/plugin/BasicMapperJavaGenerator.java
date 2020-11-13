@@ -27,14 +27,14 @@ public class BasicMapperJavaGenerator extends AbstractJavaGenerator{
 //		}
 		Interface interfaze = new Interface(type);
 		interfaze.setVisibility(JavaVisibility.PUBLIC);
-		interfaze.addImportedType(new FullyQualifiedJavaType("com.zhifu.gateway.persisten.common.BasicMapper"));
+		interfaze.addImportedType(new FullyQualifiedJavaType("com.artPark.common.plugin.BasicMapper"));
 		interfaze.addImportedType(new FullyQualifiedJavaType(this.introspectedTable.getBaseRecordType()));
 //		if (size == 0) {
 //			interfaze.addImportedType(new FullyQualifiedJavaType("com.bocom.bbip.data.domain.NoId"));
 //		} else if (size > 1) {
 //			interfaze.addImportedType(new FullyQualifiedJavaType(this.introspectedTable.getPrimaryKeyType()));
 //		}
-		interfaze.addSuperInterface(new FullyQualifiedJavaType("com.zhifu.gateway.persisten.common.BasicMapper<" + this.introspectedTable.getBaseRecordType() + ">"));
+		interfaze.addSuperInterface(new FullyQualifiedJavaType("com.artPark.common.plugin.BasicMapper<" + this.introspectedTable.getBaseRecordType() + ">"));
 		List<CompilationUnit> answer = new ArrayList();
 		answer.add(interfaze);
 		return answer;
