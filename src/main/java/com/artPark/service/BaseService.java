@@ -1,4 +1,4 @@
-package com.artPark.common.mapper;
+package com.artPark.service;
 
 import com.artPark.common.plugin.BasicMapper;
 import com.artPark.common.plugin.BasicModel;
@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Author lbc on 2020/11/10  10:02.
+ * @Author lbc on 2020/11/26  16:31.
  */
-public class BasicController implements ApplicationContextAware {
+public class BaseService implements ApplicationContextAware {
     private ApplicationContext applicationContext;
-    private Map<Class,BasicMapper> modelMapper = new ConcurrentHashMap<Class, BasicMapper>();
+    private Map<Class, BasicMapper> modelMapper = new ConcurrentHashMap<Class, BasicMapper>();
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -33,12 +33,13 @@ public class BasicController implements ApplicationContextAware {
         return mapper.find(obj);
     }
 
-    public Object findOne(String pk,Class c) {
+    public <T> T findOne(String pk,Class c) {
         BasicMapper mapper = modelMapper.get(c);
         if(mapper == null){
             mapper = addMapper(c);
         }
-        return mapper.findOne(pk);
+        Object a = mapper.findOne(pk);
+        return (T)a;
     }
 
     public void delete(String pk,Class c) {
@@ -62,7 +63,7 @@ public class BasicController implements ApplicationContextAware {
         if(mapper == null){
             mapper = addMapper(obj.getClass());
         }
-        return mapper.update(obj);
+        return mapper.insert(obj);
     }
 
     private <T> BasicMapper addMapper(Class c){

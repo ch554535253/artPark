@@ -26,13 +26,35 @@ jQuery(document).ready(function($) {
 	
 	function login(){
 		$('#submit').addClass('loading');
-		setTimeout(function() {
-			$('#submit').addClass('done').closest('#window').addClass('flip');
-		}, 1500);
+		var data = new Object();
+		data.userId = $("#userId")[0].value;
+		data.password = md5($("#password")[0].value);
+		$.ajax({
+			url:contextPath+"/login",
+			type:"post",
+			contentType:"application/json;charset=UTF-8",
+			data:JSON.stringify(data),
+			success:function (result) {
+				console.log(result);
+				if(SUCCESS == result.code){
+					// alert(result.obj);
+					setTimeout(function() {
+						$('#submit').addClass('done').closest('#window').addClass('flip');
+					}, 500);
+				}else{
+					$('#submit').removeClass('loading');
+					alert("login failure!!")
+				}
+			},
+			error:function (e) {
+				$('#submit').removeClass('loading');
+				alert("login failure!!")
+			}
+		})
 	}
 	function initAnimation() {
 		setTimeout(function() {
-			fyll.go('focInp username', function() {
+			fyll.go('focInp userId', function() {
 //				$('#submit').addClass('loading');
 //				setTimeout(function() {
 //					$('#submit').addClass('done').closest('#window').addClass('flip');

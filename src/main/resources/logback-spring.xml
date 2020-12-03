@@ -73,7 +73,7 @@
     </logger>
 
     <!--TRACE、DEBUG、INFO、WARN、ERROR-->
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="logInConsole"/>
 <!--        <appender-ref ref="logInFile"/>-->
         <appender-ref ref="logByPerReq"/>

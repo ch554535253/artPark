@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>用户登录</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="keyword1,keyword2,keyword3">
-<meta name="description" content="this is my page">
-<meta name="content-type" content="text/html; charset=UTF-8">
-<!--<link rel="import" type="text/css" href="main.html">-->
-<script type="text/javascript" src="/artPark/webjars/jquery/3.5.1/dist/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" th:href="'/artPark'+${urls.getForLookupPath('/css/reset.css')}">
-<link rel="stylesheet" type="text/css" th:href="'/artPark'+${urls.getForLookupPath('/css/style.css')}" media="screen">
-<script type="text/javascript" th:src="'/artPark'+${urls.getForLookupPath('/js/fyll.js')}"></script>
-<script type="text/javascript" th:src="'/artPark'+${urls.getForLookupPath('/js/index.js')}"></script>
+	<title>用户登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="keyword1,keyword2,keyword3">
+	<meta name="description" content="this is my page">
+	<meta name="content-type" content="text/html; charset=UTF-8">
+	<!--<link rel="import" type="text/css" href="main.html">-->
+	<script type="text/javascript" th:src="${urls.parasUrl('/js/common.js')}"></script>
+	<script type="text/javascript" th:src="${urls.parasUrl('/js/md5.js')}"></script>
+	<link rel="stylesheet" type="text/css" th:href="${urls.parasUrl('/css/reset.css')}">
+	<link rel="stylesheet" type="text/css" th:href="${urls.parasUrl('/css/style.css')}" media="screen">
+	<script type="text/javascript" th:src="${urls.parasUrl('/js/fyll.js')}"></script>
+	<script type="text/javascript" th:src="${urls.parasUrl('/js/index.js')}"></script>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 		<div class="page-content">
 			<div class="input-row">
 				<label class="label fadeIn">用户名</label>
-				<input id="username" type="text" th:value="${username}" data-fyll="" class="input fadeIn delay1"/>
+				<input id="userId" type="text" th:value="${userId}" data-fyll="" class="input fadeIn delay1"/>
 			</div>
 			<div class="input-row">
 				<label class="label fadeIn delay2">密码</label>

@@ -18,8 +18,8 @@
 	 <sqlMapGenerator targetPackage="sqlMap" targetProject="E:/Idea_Project/artPark/src/main/resources"/>
 	 <javaClientGenerator targetPackage="com.artPark.common.mapper" type="XMLMAPPER" targetProject="E:/Idea_Project/artPark/src/main/java"/>
 
-<!--		<table schema="ROOT" tableName="SYS_USER" domainObjectName="SysUserModel"/>-->
-		<table schema="ROOT" tableName="SYS_MENU" domainObjectName="SysMenuModel"/>
+		<table schema="ROOT" tableName="SYS_USER" domainObjectName="SysUserModel"/>
+<!--		<table schema="ROOT" tableName="SYS_MENU" domainObjectName="SysMenuModel"/>-->
 <!--		<table schema="ROOT" tableName="SYS_USER" domainObjectName="SysUserModel">-->
 <!--			<property name="virtualKeyColumns" value="ID1, ID2" />-->
 <!--		</table>-->

@@ -1,5 +1,6 @@
 package com.artPark.util;
 
+import com.artPark.security.CustomUserDetails;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
@@ -29,7 +30,9 @@ public class Auth0JwtUtil {
 
     public String generateTokenByUser(UserDetails user){
         Map<String,String> claimsMap = new HashMap<String,String>();
-        claimsMap.put("role_id",authoritiesToArray(user.getAuthorities()).get(0).toString());
+        if(user instanceof CustomUserDetails){
+            claimsMap.put("role_ids",((CustomUserDetails) user).getRoleIds());
+        }
         return generateToken(user.getUsername(),claimsMap);
     }
 

@@ -12,9 +12,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,7 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-
     private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
     private final UserService userService;
@@ -48,20 +46,16 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)         //权限不足处理器
                 .and().csrf().disable()                                                     //因使用JWT作为认证标识，允许跨域请求
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //基于token,不需要session
-                .and().authorizeRequests().antMatchers("/","/login*").permitAll()  //放开无需授权访问的资源
+                .and().authorizeRequests().antMatchers("/","/login*","/registerUser","/testC").permitAll()  //放开无需授权访问的资源
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtTokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-//    @Override
-//    protected  void configure(AuthenticationManagerBuilder builder) throws Exception {
-//        builder.userDetailsService(new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//                return userService.getUserDetails();
-//            }
-//        });
-//    }
+    @Autowired
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception{
@@ -71,6 +65,15 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager getAuthenticationManager() throws Exception {
         return super.authenticationManager();
+    }
+
+    /**
+     * 装载BCrypt密码编码器
+     * @return
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 //    @Bean

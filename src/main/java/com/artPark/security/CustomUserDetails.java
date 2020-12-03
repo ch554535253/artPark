@@ -1,6 +1,8 @@
 package com.artPark.security;
 
+import com.artPark.constant.Dict;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,10 +17,12 @@ import java.util.List;
  * @Author lbc on 2020/10/22  17:26.
  */
 @Data
+@NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private String userId;
     private String password;
-    private String roleId;
+    private String roleIds;
+    private String enable;
 
     public CustomUserDetails(String userId){
         this.userId = userId;
@@ -27,7 +31,11 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(roleId));
+        if(roleIds != null){
+            for(String roleId : roleIds.split(",")){
+                authorities.add(new SimpleGrantedAuthority(roleId));
+            }
+        }
         return authorities;
     }
 
@@ -56,6 +64,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return Dict.Y.equals(enable);
     }
 }

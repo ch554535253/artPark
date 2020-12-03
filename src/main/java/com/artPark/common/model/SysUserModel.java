@@ -2,37 +2,33 @@ package com.artPark.common.model;
 
 import com.artPark.common.plugin.BasicModel;
 
-public class SysUserModel extends BasicModel {
-    private Integer userId;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
-    private String name;
+public class SysUserModel extends BasicModel {
+    private String userId;
 
     private String sex;
 
     private String birthday;
 
+    @NotBlank(message = "手机号不能为空")
     private String mobile;
 
     private String email;
 
     private String address;
 
-    private String passwd;
+    private String password;
 
-    public Integer getUserId() {
+    private String enable;
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSex() {
@@ -75,11 +71,19 @@ public class SysUserModel extends BasicModel {
         this.address = address;
     }
 
-    public String getPasswd() {
-        return passwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable;
     }
 }
