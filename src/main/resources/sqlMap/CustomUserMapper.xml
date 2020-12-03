@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artPark.common.mapper.CustomUserMapper" >
+  <select id="getCustomUserDetails" resultType="com.artPark.security.CustomUserDetails">
+    SELECT
+        su.user_id as userId,
+        su.password,
+        su.enable,
+        (select GROUP_CONCAT(sru.role_id) from sys_role_user sru where sru.user_id=su.user_id) as roleIds
+    FROM sys_user su
+    WHERE su.user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>
