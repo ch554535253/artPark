@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>artPark</name>
 	<description>Demo project for Spring Boot</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
+<!--			<scope>provided</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+<!--			<scope>runtime</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -112,6 +112,15 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.apache.activemq</groupId>-->
+<!--			<artifactId>activemq-all</artifactId>-->
+<!--			<version>5.16.0</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -129,6 +138,9 @@
 					</execution>
 				</executions>
 				<configuration>
+					<mainClass>com.artPark.ArtParkApplication</mainClass>
+					<!--需配置指定ZIP，否则启动时-Dloader.path不生效-->
+					<layout>ZIP</layout>
 					<!-- 排除依赖包 Step.1********************************打包如需jar取消该配置 -->
 					<includes>
 							<include>
@@ -194,6 +206,8 @@
 				<executions>
 					<execution>
 						<id>Generate MyBatis Artifacts </id>
+						<!--因plugin在maven生命周期中，故设置此项，避免package或install时执行此插件（会报错）-->
+						<phase>deploy</phase>
 						<goals>
 							<goal>generate </goal>
 						</goals>
